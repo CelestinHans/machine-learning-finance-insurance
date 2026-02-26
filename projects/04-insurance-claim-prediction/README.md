@@ -12,35 +12,35 @@ A **Generalized Linear Model (GLM)** extends linear regression to non-Gaussian t
 3) a **link function** that maps $\eta_i$ to the mean.
 
 For claim frequency modeling, we assume the number of claims for policy $i$ satisfies:
-$$
+```math
 \mathrm{ClaimNb}_i \sim \mathrm{Poisson}(\lambda_i \cdot \mathrm{Exposure}_i),
 \quad\text{equivalently}\quad
 y_i \cdot \mathrm{Exposure}_i \sim \mathrm{Poisson}(\lambda_i \cdot \mathrm{Exposure}_i),
-$$
+```
 where $y_i = \mathrm{ClaimNb}_i / \mathrm{Exposure}_i$ is the **claim frequency**.
 
 The Poisson GLM uses a **log-link**, meaning the intensity (expected frequency) is:
-$$
+```math
 \lambda_i = \exp(\langle \theta, x_i \rangle + \theta_0).
-$$
+```
 This guarantees $\lambda_i > 0$ and makes the model linear in the log-scale.
 
 ### Exposure-weighted Poisson deviance (what it measures)
 The main objective is the **exposure-weighted Poisson deviance**, which is a likelihood-based loss for Poisson models (lower is better). It penalizes errors in predicted frequency while accounting for different policy durations via exposure weights.
 
 The loss used in this project is:
-$$
+```math
 L(\mathcal{D}, \hat{\theta})
 =
 \frac{1}{\sum_{i=1}^m \mathrm{Exposure}_i}
 \sum_{i=1}^m \mathrm{Exposure}_i \, \ell(\hat{\lambda}_i, y_i),
-$$
+```
 with
-$$
+```math
 \hat{\lambda}_i = \exp(\langle \hat{\theta}, x_i \rangle + \hat{\theta}_0),
 \qquad
 \ell(\hat{\lambda}, y) = 2\big(\hat{\lambda} - y - y\log \hat{\lambda} + y\log y\big),
-$$
+```
 and the convention $x\log x = 0$ when $x=0$.
 
 Intuition:
